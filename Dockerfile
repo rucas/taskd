@@ -34,4 +34,8 @@ RUN set -x \
 VOLUME ${TASKDDATA}
 WORKDIR ${TASKDDATA}
 
-RUN taskd init
+COPY docker-entrypoint.sh /entrypoint.sh
+
+
+EXPOSE 53589
+#RUN taskd init
