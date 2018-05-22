@@ -1,5 +1,7 @@
 FROM alpine:3.4
 LABEL maintainer="lucas.rondenet@gmail.com"
+
+ENV GOSU_VERSION 1.10
 ENV TASKDDATA /var/taskd
 
 RUN addgroup -S taskd \
@@ -12,7 +14,24 @@ RUN apk add --no-cache \
   taskd-pki=1.1.0-r2 \
 && rm -rf /var/cache/apk/*
 
-VOLUME "$TASKDDATA"
-WORKDIR "$TASKDDATA"
+RUN set -x \
+    && apk add --no-cache --virtual gosu-deps \
+       dpkg=1.18.7-r0 \
+       gnupg=2.1.12-r0 \
+       openssl=1.0.2n-r0 \
+    && dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')" \
+    && wget -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch" \
+    && wget -O /usr/local/bin/gosu.asc "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch.asc" \
+    && scratch="$(mktemp -d)" \
+    && export GNUPGHOME=$scratch \
+    && gpg --keyserver ha.pool.sks-keyservers.net --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4 \
+    && gpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu \
+    && rm -r "$GNUPGHOME" /usr/local/bin/gosu.asc \
+    && chmod +x /usr/local/bin/gosu \
+    && gosu nobody true \
+    && apk del gosu-deps
+
+VOLUME ${TASKDDATA}
+WORKDIR ${TASKDDATA}
 
 RUN taskd init
