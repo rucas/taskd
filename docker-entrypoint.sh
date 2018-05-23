@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 set -e
 PKI=$TASKDDATA/pki
 
@@ -26,6 +26,10 @@ if [ ! -f "$PKI/ca.cert.pem" ]; then
     taskd config --force log "$TASKDDATA/taskd.log"
     taskd config --force pid.file "$TASKDDATA/taskd.pid"
     taskd config --force server 0.0.0.0:53589
+
+    taskd add org "${ORG:=Public}"
+    taskd add user "${ORG}" "${FIRST_NAME:=Rucas} ${LAST_NAME:=MANIA}"
+    ./generate.client "${FIRST_NAME}_${LAST_NAME}"
     chown -R taskd:taskd "$TASKDDATA"
 fi
 
@@ -34,4 +38,4 @@ if [ "$1" = 'taskd' ] && [ "$(id -u)" = '0' ]; then
     set -- gosu taskd "$@"
 fi
 
-echo "$1"
+exec "$@"

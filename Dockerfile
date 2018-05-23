@@ -1,5 +1,5 @@
 FROM alpine:3.4
-LABEL maintainer="lucas.rondenet@gmail.com"
+LABEL maintainer="rucas <lucas.rondenet@gmail.com>"
 
 ENV GOSU_VERSION 1.10
 ENV TASKDDATA /var/taskd
@@ -35,7 +35,8 @@ VOLUME ${TASKDDATA}
 WORKDIR ${TASKDDATA}
 
 COPY docker-entrypoint.sh /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
 
 
 EXPOSE 53589
-#RUN taskd init
+CMD ["taskd", "server"]
