@@ -28,7 +28,7 @@ if [ ! -f "$PKI/ca.cert.pem" ]; then
     taskd config --force server 0.0.0.0:53589
 
     taskd add org "${ORG:=Public}"
-    taskd add user "${ORG}" "${FIRST_NAME:=Rucas} ${LAST_NAME:=MANIA}"
+    taskd add user "${ORG}" "${FIRST_NAME:=Rucas} ${LAST_NAME:=Mania}"
     ./generate.client "${FIRST_NAME}_${LAST_NAME}"
     chown -R taskd:taskd "$TASKDDATA"
 fi
