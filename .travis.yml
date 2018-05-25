@@ -23,7 +23,7 @@ jobs:
     - stage: test
       script: |
         docker build -t rucas/taskd .
-        # ~/official-images/test/run.sh rucas/taskd
+        ~/official-images/test/run.sh rucas/taskd
     - stage: deploy
       if: branch = master
       script: |
