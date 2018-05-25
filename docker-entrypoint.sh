@@ -16,20 +16,20 @@ if [ ! -f "$PKI/ca.cert.pem" ]; then
     sed -i "s/\\(STATE=\\).*/\\1\"${CERT_STATE:-"Västra Götaland"}\"/" vars
     sed -i "s/\\(LOCALITY=\\).*/\\1\"${CERT_LOCALITY:-"Göteborg"}\"/" vars
 
-    ./generate
-    taskd config --force client.cert "$PKI/client.cert.pem"
-    taskd config --force client.key "$PKI/client.key.pem"
-    taskd config --force server.cert "$PKI/server.cert.pem"
-    taskd config --force server.key "$PKI/server.key.pem"
-    taskd config --force server.crl "$PKI/server.crl.pem"
-    taskd config --force ca.cert "$PKI/ca.cert.pem"
-    taskd config --force log "$TASKDDATA/taskd.log"
-    taskd config --force pid.file "$TASKDDATA/taskd.pid"
-    taskd config --force server 0.0.0.0:53589
+    ./generate > stdout.txt 2> stderr.txt 
+    taskd config --force client.cert "$PKI/client.cert.pem" > /dev/null 2>&1
+    taskd config --force client.key "$PKI/client.key.pem" > /dev/null 2>&1
+    taskd config --force server.cert "$PKI/server.cert.pem" > /dev/null 2>&1
+    taskd config --force server.key "$PKI/server.key.pem" > /dev/null 2>&1
+    taskd config --force server.crl "$PKI/server.crl.pem" > /dev/null 2>&1
+    taskd config --force ca.cert "$PKI/ca.cert.pem" > /dev/null 2>&1
+    taskd config --force log "$TASKDDATA/taskd.log" > /dev/null 2>&1
+    taskd config --force pid.file "$TASKDDATA/taskd.pid" > /dev/null 2>&1
+    taskd config --force server 0.0.0.0:53589 > /dev/null 2>&1
 
-    taskd add org "${ORG:=Public}"
-    taskd add user "${ORG}" "${FIRST_NAME:=Rucas} ${LAST_NAME:=Mania}"
-    ./generate.client "${FIRST_NAME}_${LAST_NAME}"
+    taskd add org "${ORG:=Public}" > /dev/null 2>&1
+    taskd add user "${ORG}" "${FIRST_NAME:=Rucas} ${LAST_NAME:=Mania}" > stdout.txt 2> stderr.txt
+    ./generate.client "${FIRST_NAME}_${LAST_NAME}" > stdout.txt 2> stderr.txt
     chown -R taskd:taskd "$TASKDDATA"
 fi
 
