@@ -12,11 +12,16 @@ $ git clone https://github.com/rucas/taskd
 
 ## Tests
 
-In order to run tests you need to clone:
+### official-images
 
+In order to run tests you need to clone:
 
 ```sh
 ```
+
+### shellcheck
+
+### hadolint
 
 ## Submitting a Patch
 
