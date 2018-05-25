@@ -10,7 +10,7 @@ $ docker pull rucas/taskd
 
 ## Usage
 
-## Start a Taskwarrior Server
+### Start a Taskwarrior Server
 
 ```sh
 $ docker run -d -p 53589:53589 \
@@ -44,5 +44,18 @@ $ ./bootstrap.sh \
 :wave: :point_right: Check out the [Contributing](CONTRIBUTING.md) doc to get you 
 started.
 
-## License
+## FAQ
 
+### Who?
+
+Checkout the [Maintainers](MAINTAINERS.md) doc to see who has contributed.
+
+### What is Taskwarrior?
+
+### When?
+
+### What is bootstrap.sh?
+
+### Why?
+
+## License
