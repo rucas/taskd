@@ -24,11 +24,11 @@ client() {
 
     echo "Setting up taskwarrrior client..."
     cp "$CA" "$CERT" "$KEY" ~/.task
-    task config --force taskd.certificate "$CERT"
-    task config --force taskd.key "$KEY"
-    task config --force taskd.ca  "$CA"
-    task config --force taskd.server "$HOST"    
-    task config --force taskd.credentials "Public/${FIRST_NAME} ${LAST_NAME}/${ID}"
+    yes | task config taskd.certificate "$CERT" > /dev/null 2>&1
+    yes | task config taskd.key "$KEY" > /dev/null 2>&1
+    yes | task config taskd.ca  "$CA" > /dev/null 2>&1
+    yes | task config taskd.server "$HOST" > /dev/null 2>&1   
+    yes | task config taskd.credentials "Public/${FIRST_NAME} ${LAST_NAME}/${ID}" > /dev/null 2>&1
 }
 
 clean() {
