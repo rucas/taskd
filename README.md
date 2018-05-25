@@ -61,3 +61,4 @@ Since commit [5c73c9](https://github.com/rucas/taskd/commit/5c73c9d0efe5a9d870df
 ### Why?
 
 ## License
+MIT © rucas
