@@ -54,6 +54,8 @@ Checkout the [Maintainers](MAINTAINERS.md) doc to see who has contributed.
 
 ### When?
 
+Since commit [5c73c9](https://github.com/rucas/taskd/commit/5c73c9d0efe5a9d870df33771e5664c8f02b2953)
+
 ### What is bootstrap.sh?
 
 ### Why?
