@@ -38,4 +38,5 @@ COPY docker-entrypoint.sh /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 
 EXPOSE 53589
-CMD ["taskd", "server"]
+#CMD ["taskd", "server"]
+CMD ["taskd"]
