@@ -2,6 +2,26 @@
 
 > A containerized taskwarrior server
 
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+
+- [Install](#install)
+- [Usage](#usage)
+  - [Start a Taskwarrior Server](#start-a-taskwarrior-server)
+  - [Find New User Key](#find-new-user-key)
+  - [Sync with Taskwarrior Client](#sync-with-taskwarrior-client)
+- [Contributing](#contributing)
+- [FAQ](#faq)
+  - [Who?](#who)
+  - [What is Taskwarrior?](#what-is-taskwarrior)
+  - [When?](#when)
+  - [What is bootstrap.sh?](#what-is-bootstrapsh)
+  - [Why?](#why)
+- [License](#license)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 ## Install
 
 ```sh
@@ -46,7 +66,7 @@ $ ./bootstrap.sh \
     --key taskd/pki/rucas_mania.key.pem \
     --cert taskd/pki/rucas_mania.cert.pem \
     --host localhost:53589 \
-    --id 07830604-cd85-4381-9547-0ee9f127c823 \
+    --id 004e3fbd-d501-4c55-ab42-35280ccd7229 \
     --firstname rucas \
     --lastname mania \
     client
@@ -82,5 +102,8 @@ $ ./bootstrap -h
 
 ### Why?
 
+Why not?
+
 ## License
+
 MIT © rucas
