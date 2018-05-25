@@ -14,8 +14,13 @@ install:
   - curl -sL -o ${HADOLINT} "https://github.com/hadolint/hadolint/releases/download/v1.2.4/hadolint-$(uname -s)-$(uname -m)" && chmod 700 ${HADOLINT}
   - git clone https://github.com/docker-library/official-images.git ~/official-images
 
-script:
-  - git ls-files --exclude='Dockerfile*' --ignored | xargs --max-lines=1 ${HADOLINT}
-  - shellcheck *.sh
-  - docker build -t rucas/taskd
-  - ~/official-images/test/run.sh "$image"
+jobs:
+  include:
+    - stage: lint
+      script: |
+        git ls-files --exclude='Dockerfile*' --ignored | xargs --max-lines=1 ${HADOLINT}
+        shellcheck *.sh
+    - stage: test
+      script: |
+        docker build -t rucas/taskd
+        ~/official-images/test/run.sh "$image"
