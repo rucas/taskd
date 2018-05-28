@@ -49,10 +49,10 @@ $ docker run -d -p 53589:53589 \
 ### Find New User Key
 
 ```sh
-$ docker logs <CONTAINER_ID>
+
+$ tail taskd/pki/stdout.txt
 
 ...
-Created organization 'Public'
 New user key: 004e3fbd-d501-4c55-ab42-35280ccd7229
 Created user 'rucas mania' for organization 'Public'
 

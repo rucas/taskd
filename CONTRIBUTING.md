@@ -17,11 +17,23 @@ $ git clone https://github.com/rucas/taskd
 In order to run tests you need to clone:
 
 ```sh
+$ git clone https://github.com/docker-library/official-images
+$ ./official-images/test/run.sh rucas/taskd
 ```
 
 ### shellcheck
 
+```sh
+$ brew install shellcheck
+$ shellcheck *.sh
+```
+
 ### hadolint
+
+```sh
+$ brew install hadolint
+$ hadolint Dockerfile
+```
 
 ## Submitting a Patch
 
