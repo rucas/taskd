@@ -25,6 +25,7 @@ jobs:
         docker build -t rucas/taskd .
         ~/official-images/test/run.sh rucas/taskd
     - stage: deploy
+      if: branch = master
       script: |
         echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
         docker build -t rucas/taskd:latest . 
