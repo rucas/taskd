@@ -16,7 +16,7 @@ if [ ! -f "$PKI/ca.cert.pem" ]; then
     sed -i "s/\\(STATE=\\).*/\\1\"${CERT_STATE:-"Västra Götaland"}\"/" vars
     sed -i "s/\\(LOCALITY=\\).*/\\1\"${CERT_LOCALITY:-"Göteborg"}\"/" vars
 
-    ./generate > stdout.txt 2> stderr.txt 
+    ./generate >> stdout.txt 2>> stderr.txt 
     taskd config --force client.cert "$PKI/client.cert.pem" > /dev/null 2>&1
     taskd config --force client.key "$PKI/client.key.pem" > /dev/null 2>&1
     taskd config --force server.cert "$PKI/server.cert.pem" > /dev/null 2>&1
@@ -28,8 +28,8 @@ if [ ! -f "$PKI/ca.cert.pem" ]; then
     taskd config --force server 0.0.0.0:53589 > /dev/null 2>&1
 
     taskd add org "${ORG:=Public}" > /dev/null 2>&1
-    taskd add user "${ORG}" "${FIRST_NAME:=Rucas} ${LAST_NAME:=Mania}" > stdout.txt 2> stderr.txt
-    ./generate.client "${FIRST_NAME}_${LAST_NAME}" > stdout.txt 2> stderr.txt
+    taskd add user "${ORG}" "${FIRST_NAME:=Rucas} ${LAST_NAME:=Mania}" >> stdout.txt 2>> stderr.txt
+    ./generate.client "${FIRST_NAME}_${LAST_NAME}" >> stdout.txt 2>> stderr.txt
     chown -R taskd:taskd "$TASKDDATA"
 fi
 
