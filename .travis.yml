@@ -34,7 +34,7 @@ jobs:
         docker build -t rucas/taskd .
         ~/official-images/test/run.sh rucas/taskd
     - stage: Docker Hub 
-      if: branch = master
+      if: type NOT (pull_request) AND IS master 
       script: |
         version=`cat VERSION`
         echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
