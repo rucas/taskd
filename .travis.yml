@@ -27,24 +27,25 @@ before_deploy:
 
 jobs:
   include:
-    - stage: lint
-      script: |
+    - script: |
         git ls-files --exclude='Dockerfile*' --ignored | xargs --max-lines=1 ${HADOLINT}
         shellcheck *.sh
-    - stage: test
-      script: |
+    - script: |
         docker build -t rucas/taskd .
         ~/official-images/test/run.sh rucas/taskd
-    - stage: Docker Hub and Github Release
+    - stage: Docker Hub 
       if: branch = master
-      deploy:
-        provider: releases
-        api_key: $GH_TOKEN
-        skip_cleanup: true
       script: |
-        version=`cat VERSION`
         echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
         docker build -t rucas/taskd:latest .
         docker tag rucas/taskd:latest rucas/taskd:$version
         docker push rucas/taskd:latest
         docker push rucas/taskd:$version
+    - stage: Github Release
+      script: echo "Deploying to GitHub releases ..."
+      deploy:
+        provider: releases
+        api_key: $GH_TOKEN
+        skip_cleanup: true
+        on:
+          branch: master
