@@ -42,6 +42,7 @@ jobs:
         api_key: $GH_TOKEN
         skip_cleanup: true
       script: |
+        version=`cat VERSION`
         echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
         docker build -t rucas/taskd:latest .
         docker tag rucas/taskd:latest rucas/taskd:$version
