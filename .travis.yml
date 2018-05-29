@@ -46,5 +46,3 @@ jobs:
         docker tag rucas/taskd:latest rucas/taskd:$version
         docker push rucas/taskd:latest
         docker push rucas/taskd:$version
-        git tag -a v$version -m "$version"
-        git push origin --tags
