@@ -18,7 +18,8 @@ before_deploy:
   - git config --global user.email "rucasbot@gmail.com"
   - git config --global user.name "rucasbot"
   - version=`cat VERSION`
-  - echo "\n## v$version\n:date: `date`" >> CHANGELOG.md
+  - echo "\n## v$version" >> CHANGELOG.md
+  - echo "\n:date: `date`" >> CHANGELOG.md
   - echo "\n[:whale: rucas/taskd:$version](https://hub.docker.com/r/rucas/taskd/tags/)" >> CHANGELOG.md
   - echo "\n[:bookmark: release v1.0.0](https://www.github.com)" >> CHANGELOG.md
   - echo "\nA whole bunch of changes: " >> CHANGELOG.md
