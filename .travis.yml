@@ -43,7 +43,6 @@ jobs:
         docker push rucas/taskd:latest
         docker push rucas/taskd:$version
     - stage: Github Release
-      if: (NOT type IN (pull_request)) AND (branch = master) 
       script: echo "Deploying to GitHub releases ..."
       deploy:
         provider: releases
