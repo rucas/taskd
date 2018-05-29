@@ -19,10 +19,10 @@ before_deploy:
   - git config --global user.name "rucasbot"
   - version=`cat VERSION`
   - echo "\n## v$version" >> CHANGELOG.md
-  - echo "\n:date: `date`" >> CHANGELOG.md
+  - echo "\n:date: $(date)" >> CHANGELOG.md
   - echo "\n[:whale: rucas/taskd:$version](https://hub.docker.com/r/rucas/taskd/tags/)" >> CHANGELOG.md
   - echo "\n[:bookmark: release v1.0.0](https://www.github.com/rucas/taskd/releases/tag/v$version)" >> CHANGELOG.md
-  - echo "\nA whole bunch of changes: " >> CHANGELOG.md
+  - echo "\nA whole bunch of changes:" >> CHANGELOG.md
   - git tag -a v$version -m "$version"
 
 jobs:
@@ -43,7 +43,7 @@ jobs:
         skip_cleanup: true
       script: |
         echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-        docker build -t rucas/taskd:latest . 
+        docker build -t rucas/taskd:latest .
         docker tag rucas/taskd:latest rucas/taskd:$version
         docker push rucas/taskd:latest
         docker push rucas/taskd:$version
