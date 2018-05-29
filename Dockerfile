@@ -24,7 +24,10 @@ RUN set -x \
     && wget -O /usr/local/bin/gosu.asc "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch.asc" \
     && scratch="$(mktemp -d)" \
     && export GNUPGHOME=$scratch \
-    && gpg --keyserver ha.pool.sks-keyservers.net --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4 \
+    && GPG_KEYS=B42F6819007F00F88E364FD4036A9C25BF357DD4 \
+    && ( gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$GPG_KEYS" \
+    || gpg --keyserver pgp.mit.edu --recv-keys "$GPG_KEYS" \
+    || gpg --keyserver keyserver.pgp.com --recv-keys "$GPG_KEYS" ) \
     && gpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu \
     && rm -r "$GNUPGHOME" /usr/local/bin/gosu.asc \
     && chmod +x /usr/local/bin/gosu \
