@@ -24,8 +24,6 @@ before_deploy:
   - echo "\nA whole bunch of changes: " >> CHANGELOG.md
   - git tag -a v$version -m "$version"
 
-  
-
 jobs:
   include:
     - stage: lint
