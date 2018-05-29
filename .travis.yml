@@ -14,6 +14,18 @@ install:
   - curl -sL -o ${HADOLINT} "https://github.com/hadolint/hadolint/releases/download/v1.2.4/hadolint-$(uname -s)-$(uname -m)" && chmod 700 ${HADOLINT}
   - git clone https://github.com/docker-library/official-images.git ~/official-images
 
+before_deploy:
+  - git config --global user.email "rucasbot@gmail.com"
+  - git config --global user.name "rucasbot"
+  - version=`cat VERSION`
+  - echo "\n## v$version\n:date: `date`" >> CHANGELOG.md
+  - echo "\n[:whale: rucas/taskd:$version](https://hub.docker.com/r/rucas/taskd/tags/)" >> CHANGELOG.md
+  - echo "\n[:bookmark: release v1.0.0](https://www.github.com)" >> CHANGELOG.md
+  - echo "\nA whole bunch of changes: " >> CHANGELOG.md
+  - git tag -a v$version -m "$version"
+
+  
+
 jobs:
   include:
     - stage: lint
@@ -24,12 +36,17 @@ jobs:
       script: |
         docker build -t rucas/taskd .
         ~/official-images/test/run.sh rucas/taskd
-    - stage: deploy
+    - stage: Docker Hub and Github Release
       if: branch = master
+      deploy:
+        provider: releases
+        api_key: $GH_TOKEN
+        skip_cleanup: true
       script: |
         echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
         docker build -t rucas/taskd:latest . 
-        version=`cat VERSION`
         docker tag rucas/taskd:latest rucas/taskd:$version
         docker push rucas/taskd:latest
         docker push rucas/taskd:$version
+        git tag -a v$version -m "$version"
+        git push origin --tags
