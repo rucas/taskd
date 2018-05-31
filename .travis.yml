@@ -1,0 +1,65 @@
+language: bash
+services: docker
+
+env:
+  HADOLINT: "${HOME}/hadolint"
+
+addons:
+  apt:
+    packages:
+      - shellcheck
+
+install:
+  # Download hadolint binary and set it as executable
+  - curl -sL -o ${HADOLINT} "https://github.com/hadolint/hadolint/releases/download/v1.2.4/hadolint-$(uname -s)-$(uname -m)" && chmod 700 ${HADOLINT}
+  - git clone https://github.com/docker-library/official-images.git ~/official-images
+
+before_deploy:
+  - git config --global user.email "rucasbot@gmail.com"
+  - git config --global user.name "rucasbot"
+  - version=`cat VERSION`
+  - "echo -e \"\" >> CHANGELOG.md"
+  - "echo -e \"## v$version\" >> CHANGELOG.md"
+  - "echo -e \"\" >> CHANGELOG.md"
+  - "echo -e \":date: $(date)\" >> CHANGELOG.md"
+  - "echo -e \"\" >> CHANGELOG.md"
+  - "echo -e \"[:whale: rucas/taskd:$version](https://hub.docker.com/r/rucas/taskd/tags/)\" >> CHANGELOG.md"
+  - "echo -e \"\" >> CHANGELOG.md"
+  - "echo -e \"[:bookmark: release v1.0.0](https://www.github.com/rucas/taskd/releases/tag/v$version)\" >> CHANGELOG.md"
+  - "echo -e \"\" >> CHANGELOG.md"
+  - "echo -e \"A whole bunch of changes:\" >> CHANGELOG.md"
+  - git tag -a v$version -m "$version"
+
+after_deploy:
+  - version=`cat VERSION`
+  - git remote rm origin 
+  - git remote add origin "https://${GH_TOKEN}@github.com/rucas/taskd.git" 
+  - git checkout -b tag/v$version
+  - git add CHANGELOG.md
+  - git commit -m "updated CHANGELOG.md [ci skip]"
+  - git push origin tag/v$version
+
+jobs:
+  include:
+    - script: |
+        git ls-files --exclude='Dockerfile*' --ignored | xargs --max-lines=1 ${HADOLINT}
+        shellcheck *.sh
+    - script: |
+        docker build -t rucas/taskd .
+        ~/official-images/test/run.sh rucas/taskd
+    - stage: Docker Hub
+      if: (NOT type IN (pull_request)) AND (branch = master)
+      script: |
+        version=`cat VERSION`
+        echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+        docker build -t rucas/taskd:latest .
+        docker tag rucas/taskd:latest rucas/taskd:$version
+        docker push rucas/taskd:latest
+        docker push rucas/taskd:$version
+    - stage: Github Release
+      if: (NOT type IN (pull_request)) AND (branch = master)
+      script: echo "Deploying to GitHub releases ..."
+      deploy:
+        provider: releases
+        api_key: $GH_TOKEN
+        skip_cleanup: true
